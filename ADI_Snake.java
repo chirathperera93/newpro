@@ -4,13 +4,13 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Snake
+public class ADI_Snake
 {
     /**
      * Constructor for objects of class Snake
      */
-    public Snake() {
-        // initialise instance variables        
+    public ADI_Snake() {
+        // initialise instance variables
     }
 
 }

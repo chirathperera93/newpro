@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-public class PlayerList
+public class ADI_PlayerList
 {
     // list of player objects
     private ArrayList<Player> playerList;
- 
+
     /**
      * Constructor for objects of class Player
      */
-    public PlayerList() {
+    public ADI_PlayerList() {
         // initialise the player list
         playerList = new ArrayList<>();
     }
@@ -41,7 +41,7 @@ public class PlayerList
         if (direction == 'A') {
             //sort the list in ascending order
             Collections.sort(playerList);
-        } else if (direction == 'D')        
+        } else if (direction == 'D')
         {
             //sort the list in descending order
             Collections.sort(playerList, Collections.reverseOrder());
@@ -56,7 +56,7 @@ public class PlayerList
     public boolean matchPlayer(String name, String password) {
         boolean match;
         match = false;
-        
+
         Iterator<Player> iter = playerList.iterator();
         while (iter.hasNext()) {
             Player player = iter.next();
@@ -64,11 +64,11 @@ public class PlayerList
                match = true;
                break;
             }
-        }        
-        
+        }
+
         return match;
     }
-    
+
     /**
      * Method to convert the PlayerList to a string
      * @params none
@@ -91,24 +91,24 @@ public class PlayerList
         }
         return s;
     }
-    
+
     /**
-     * This private class for storing player's details 
+     * This private class for storing player's details
      */
     class Player implements Comparable<Player> {
         public String name;
         public String password;
-        
+
         public Player(String name, String password) {
             this.name = name;
             this.password = password;
         }
-        
+
         @Override
         public String toString() {
             return name + "[pass=" + password + "]";
         }
- 
+
         @Override
         public int compareTo(Player p) {
             return this.name.compareTo(p.name);

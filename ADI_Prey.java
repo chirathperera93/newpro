@@ -1,14 +1,14 @@
 /**
  * Class Prey represents any prey object.
  *
- * @author 
+ * @author
  * @version
  */
-public class Prey {
+public class ADI_Prey {
     /**
      * Constructor for objects of class Prey
      */
-    public Prey()
+    public ADI_Prey()
     {
-    }    
+    }
 }
