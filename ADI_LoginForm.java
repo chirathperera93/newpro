@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 
 /**
  * This program demonstrates how to use JFrame and LayoutManager.
+ *
  * @author Vinh Bui
  */
 
@@ -95,14 +96,14 @@ public class ADI_LoginForm extends JFrame implements ActionListener {
 
     }
 
-    private void readPlayerFromFile(String fileName) throws FileNotFoundException{
+    private void readPlayerFromFile(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
 
         //Creating Scanner instnace to read File in Java
         Scanner scnr = new Scanner(file);
 
         //Reading each line of file using Scanner class
-        while(scnr.hasNextLine()){
+        while (scnr.hasNextLine()) {
             String line = scnr.nextLine();
             Scanner uscanner = new Scanner(line);
             String username = uscanner.next();
