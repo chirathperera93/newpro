@@ -1,18 +1,10 @@
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.JOptionPane;
-import java.awt.event.*;
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * This program demonstrates how to use JFrame and LayoutManager.
@@ -89,7 +81,10 @@ public class ADI_LoginForm extends JFrame implements ActionListener {
         String username = textUsername.getText();
         String password = fieldPassword.getText();
         if (playerList.matchPlayer(username, password)) {
-            JOptionPane.showMessageDialog(this, username + ": login successfully");
+//            JOptionPane.showMessageDialog(this, username + ": login successfully");
+            this.setVisible(false);
+            ADI_SnakeGame adi_snakeGame = new ADI_SnakeGame();
+            adi_snakeGame.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "wrong username or password");
         }
@@ -113,12 +108,12 @@ public class ADI_LoginForm extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new ADI_LoginForm().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                new ADI_LoginForm().setVisible(true);
+//            }
+//        });
+//    }
 }

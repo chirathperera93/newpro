@@ -1,15 +1,14 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class ADI_GameBoard extends JPanel {
 
-    // These all variables should be private and final because this variables is used only within this class and never be changed their values
-    private final int ADI_Board_X_Cell = 30;
-    private final int ADI_Board_Y_Cell = 30;
-    private final int ADI_Board_Z_Cell = 10;
+    String message;
+    boolean drawMessage;
+    ADI_Snake adi_snake;
+    ADI_Prey adi_prey;
+
 
     // We can create abstract class to dimensions BoardDimension
 
@@ -29,14 +28,68 @@ public class ADI_GameBoard extends JPanel {
 
 
     public ADI_GameBoard() {
-        setPreferredSize(new Dimension(ADI_Board_X_Cell * ADI_Board_Z_Cell, ADI_Board_Y_Cell * ADI_Board_Z_Cell));
+        setPreferredSize(ADI_Config.panelSize);
+        setBounds(0, 0, ADI_Config.panelWidth, ADI_Config.panelHeight);
         setBackground(Color.black);
         setFocusable(true);
+        drawMessage = false;
+        message = "";
+
     }
+
+    public ADI_Snake getAdi_snake() {
+        return adi_snake;
+    }
+
+    public ADI_Prey getAdi_prey() {
+        return adi_prey;
+    }
+
+    public void setSnake(ADI_Snake adi_snake) {
+        this.adi_snake = adi_snake;
+        setSnakeBorders();
+    }
+
+    public void setPrey(ADI_Prey adi_prey) {
+        this.adi_prey = adi_prey;
+        adi_snake.setPrey(adi_prey);
+    }
+
+    public void setSnakeBorders() {
+        adi_snake.setBorders(new Rectangle2D.Double(0.0, 0.0, getWidth(), getHeight()));
+    }
+
+
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (drawMessage) {
+
+            g2d.setFont(g2d.getFont().deriveFont(48f));
+            g2d.drawString(message, 10, getHeight() / 2);
+            return;
+        }
+
+        adi_snake.draw(g2d);
+        adi_prey.draw(g2d);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(ADI_Config.panelWidth, ADI_Config.panelHeight);
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return getPreferredSize();
     }
 
 }
