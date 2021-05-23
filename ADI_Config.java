@@ -12,5 +12,4 @@ public class ADI_Config {
     static int defaultLength = 5;
     static int snakeX = 240;
     static int snakeY = 240;
-
 }

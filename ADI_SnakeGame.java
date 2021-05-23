@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener, ADI_SnakeAction {
 
@@ -8,8 +11,6 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
 
     private ADI_Snake adi_snake;
     private ADI_Prey adi_prey;
-
-    private JLabel scoreLabel;
     private JLabel timeLabel;
     private JLabel speedLabel;
 
@@ -26,7 +27,15 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
     private Image snakeImage = (new ImageIcon("resources/sn.png").getImage());
     private JLabel lblScore;
 
-    public ADI_SnakeGame() {
+    private String username;
+
+    private int storedHighScore = -1;
+
+    ArrayList<String> stringsScores = new ArrayList<>();
+
+    public ADI_SnakeGame(String username) {
+        this.username = username;
+        stringsScores = new ArrayList<>();
         setResizable(false);
 
         // for key press
@@ -47,11 +56,14 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
         setSize(getWidth() + 30, getHeight());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        score = 0;
         reset();
     }
 
+
     public void initGamePanel() {
         // init game panel
+        getSCore();
         adi_gameBoard = new ADI_GameBoard();
         adi_gameBoard.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
         add(adi_gameBoard);
@@ -70,6 +82,33 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
         JPanel topPlayersScoreJPanel = new JPanel();
         CustomPanel topPlayersScoreCustomPanel = new CustomPanel(Color.white, topPlayersScore);
         topPlayersScoreJPanel.add(topPlayersScoreCustomPanel);
+        topPlayersScoreJPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                getSCore();
+                JOptionPane.showMessageDialog(e.getComponent(), stringsScores.get(0), "Top Player Score", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         newPanel.add(topPlayersScoreJPanel, constraints);
 
 
@@ -78,16 +117,39 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
         JPanel currentPlayerScoreJPanel = new JPanel();
         CustomPanel currentPlayerScoreCustomPanel = new CustomPanel(Color.white, currentPlayerScore);
         currentPlayerScoreCustomPanel.add(currentPlayerScoreJPanel);
+        currentPlayerScoreCustomPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(e.getComponent(), score + " x", "Current Player Score", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         newPanel.add(currentPlayerScoreCustomPanel, constraints);
 
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-//        JPanel snakeImageJPanel = new JPanel();
         ImageIcon icon = new ImageIcon(snakeImage);
         SN = new JLabel(icon);
-//        CustomPanel snakeImageCustomPanel = new CustomPanel(Color.white, SN);
-//        snakeImageJPanel.add(snakeImageCustomPanel);
         newPanel.add(SN, constraints);
 
 
@@ -96,7 +158,7 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
 
 
         JPanel lblScoreJPanel = new JPanel();
-        lblScore = new JLabel("Score: 0");
+        lblScore = new JLabel("PROG5001: 2021 \n  Dilshan");
         CustomPanel lblScoreScoreCustomPanel = new CustomPanel(Color.white, lblScore);
         lblScoreJPanel.add(lblScoreScoreCustomPanel);
         newPanel.add(lblScoreJPanel, constraints);
@@ -116,13 +178,6 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
 
         newPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
 
-
-        scoreLabel = new JLabel("0 x ",
-                new ImageIcon("resources/apple.png"),
-                JLabel.CENTER);
-
-        scoreLabel.setHorizontalTextPosition(JLabel.LEFT);
-        scoreLabel.setVerticalTextPosition(JLabel.CENTER);
 
         timeLabel = new JLabel("00:00", JLabel.CENTER);
         speedLabel = new JLabel("Medium", JLabel.CENTER);
@@ -161,7 +216,7 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
         adi_gameBoard.setSnake(adi_snake);
         adi_gameBoard.setPrey(adi_prey);
 
-        score = 0;
+
         elapsed = 0;
         counts = 3;
         gameStarted = false;
@@ -183,6 +238,7 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
 
     public void start() {
         gameStarted = true;
+        stringsScores = new ArrayList<>();
         countTimer.start();
     }
 
@@ -203,6 +259,8 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
     }
 
     public void startNewGame() {
+        stringsScores = new ArrayList<>();
+        score = 0;
         reset();
         start();
     }
@@ -221,6 +279,7 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
 
     public void exitGame() {
         countTimer.stop();
+        score = 0;
         dispose();
     }
 
@@ -277,16 +336,95 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
         });
     }
 
+    private void checkStore() {
+
+        String highScore = this.username + ":" + score;
+
+        File scoreFile = new File("highScore.txt");
+
+
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        if (!scoreFile.exists()) {
+            try {
+                scoreFile.createNewFile();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                fileWriter = new FileWriter(scoreFile);
+                bufferedWriter = new BufferedWriter(fileWriter);
+                if (storedHighScore < score) {
+                    bufferedWriter.write(highScore);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (bufferedWriter != null) {
+                        bufferedWriter.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } else {
+
+            try {
+                fileWriter = new FileWriter(scoreFile);
+                bufferedWriter = new BufferedWriter(fileWriter);
+                if (storedHighScore < score) {
+                    bufferedWriter.write(highScore);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (bufferedWriter != null) {
+                        bufferedWriter.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        }
+    }
+
+    public void getSCore() {
+        stringsScores = new ArrayList<>();
+        try {
+            Scanner scanner = new Scanner(new File("highScore.txt"));
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] x = line.split(":");
+                storedHighScore = Integer.parseInt(x[1]);
+                stringsScores.add(line);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
     @Override
     public void snakeHitsPrey() {
         adi_prey.escapeFrom(adi_snake);
         adi_snake.addNormalPart();
-        scoreLabel.setText(++score + " x");
+        ++score;
     }
 
     @Override
     public void snakeHitsItself() {
         stop();
+        checkStore();
         JOptionPane.showMessageDialog(this, "Game Over!", "Try Again!", JOptionPane.ERROR_MESSAGE);
 
     }
@@ -294,6 +432,7 @@ public class ADI_SnakeGame extends JFrame implements WindowListener, KeyListener
     @Override
     public void snakeHitsBorders() {
         stop();
+        checkStore();
         JOptionPane.showMessageDialog(this, "Game Over!", "Try Again!", JOptionPane.ERROR_MESSAGE);
 
     }

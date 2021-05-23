@@ -20,6 +20,8 @@ public class ADI_LoginForm extends JFrame implements ActionListener {
     private JButton buttonLogin;
     private ADI_PlayerList playerList;
 
+    public String username = "";
+
     public ADI_LoginForm() {
         super("Login Form");
         labelUsername = new JLabel("Enter username: ");
@@ -78,12 +80,13 @@ public class ADI_LoginForm extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        String username = textUsername.getText();
+        username = textUsername.getText();
+
         String password = fieldPassword.getText();
         if (playerList.matchPlayer(username, password)) {
 //            JOptionPane.showMessageDialog(this, username + ": login successfully");
             this.setVisible(false);
-            ADI_SnakeGame adi_snakeGame = new ADI_SnakeGame();
+            ADI_SnakeGame adi_snakeGame = new ADI_SnakeGame(username);
             adi_snakeGame.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "wrong username or password");
