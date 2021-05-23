@@ -17,7 +17,7 @@ public class ADI_Snake {
     private ADI_Prey adi_prey;
     private ADI_Direction direction;
     private ADI_SnakePart snakeHead;
-
+    private ADI_SnakeAction adi_snakeAction;
     private Rectangle2D.Double borders;
 
     /**
@@ -51,6 +51,10 @@ public class ADI_Snake {
 
     public void setPrey(ADI_Prey prey) {
         adi_prey = prey;
+    }
+
+    public void setSnakeActionListener(ADI_SnakeAction act) {
+        adi_snakeAction = act;
     }
 
 
@@ -89,11 +93,8 @@ public class ADI_Snake {
             part.step();
             part.setDirection(lastPart.getDirection());
         }
-        // add to his borthers :D
+        // add to his brothers :D
         adi_snakeBody.add(part);
-        // debug
-        //System.out.println("Part Added at: " + part.getX() + ", " + part.getY());
-        //System.out.println("Direction: " + part.getDirection());
 
 
     }
@@ -103,6 +104,49 @@ public class ADI_Snake {
         addPart(new ADI_SnakePart());
     }
 
+    public ArrayList<ADI_SnakePart> parts() {
+        return adi_snakeBody;
+    }
+
+    public void setDirection(ADI_Direction dir) {
+        direction = dir;
+    }
+
+    public ADI_Direction getDirection() {
+        return direction;
+    }
+
+    public void step() {
+        // move the head
+        // then every part will replace the next part's place
+        double nextX = snakeHead.getX(), nextY = snakeHead.getY();
+        // get the curren direction of head
+        // and it will be the next direction to others
+        ADI_Direction nextDirection = snakeHead.getDirection(), currentDirection;
+        // set the new head direction
+        // which is the whole snake direction
+        //System.out.println(nextDirection);
+        snakeHead.setDirection(direction);
+        // move the head
+        snakeHead.step();
+
+        // follow the head
+        for (int i = 1; i < adi_snakeBody.size(); i++) {
+
+            // test for collision by the way?
+            ADI_SnakePart nextPart = adi_snakeBody.get(i);
+            // store the current direction
+            currentDirection = nextPart.getDirection();
+            // set the next direction
+            nextPart.setDirection(nextDirection);
+            // move to that direction
+            nextPart.step();
+            // and reset the next to current
+            // so the next direction will directed to teh current
+            nextDirection = currentDirection;
+        }
+
+    }
 
     public ADI_Direction reverseDirection(ADI_Direction adi_direction) {
         ADI_Direction d = ADI_Direction.DOWN;
@@ -138,5 +182,10 @@ public class ADI_Snake {
         }
     }
 
+    public void redraw() {
+        for (ADI_SnakePart adi_snakePart : adi_snakeBody) {
+            adi_snakePart.redraw();
+        }
+    }
 
 }

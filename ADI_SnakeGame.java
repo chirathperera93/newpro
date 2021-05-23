@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ADI_SnakeGame extends JFrame {
@@ -31,6 +34,7 @@ public class ADI_SnakeGame extends JFrame {
         reset();
     }
 
+
     public void initGamePanel() {
         // init game panel
         adi_gameBoard = new ADI_GameBoard();
@@ -38,12 +42,9 @@ public class ADI_SnakeGame extends JFrame {
         add(adi_gameBoard);
     }
 
+
     public void initStatusPanel() {
-
-
         JPanel newPanel = new JPanel(new GridBagLayout());
-
-
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(20, 50, 20, 50);
@@ -52,34 +53,44 @@ public class ADI_SnakeGame extends JFrame {
         // add components to the panel
         constraints.gridx = 0;
         constraints.gridy = 0;
-
-        topPlayersScore.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder()));
-
-        newPanel.add(topPlayersScore, constraints);
+        JPanel topPlayersScoreJPanel = new JPanel();
+        CustomPanel topPlayersScoreCustomPanel = new CustomPanel(Color.white, topPlayersScore);
+        topPlayersScoreJPanel.add(topPlayersScoreCustomPanel);
+        newPanel.add(topPlayersScoreJPanel, constraints);
 
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-
-        currentPlayerScore.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder()));
-        newPanel.add(currentPlayerScore, constraints);
+        JPanel currentPlayerScoreJPanel = new JPanel();
+        CustomPanel currentPlayerScoreCustomPanel = new CustomPanel(Color.white, currentPlayerScore);
+        currentPlayerScoreCustomPanel.add(currentPlayerScoreJPanel);
+        newPanel.add(currentPlayerScoreCustomPanel, constraints);
 
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-
+//        JPanel snakeImageJPanel = new JPanel();
         ImageIcon icon = new ImageIcon(snakeImage);
         SN = new JLabel(icon);
-
+//        CustomPanel snakeImageCustomPanel = new CustomPanel(Color.white, SN);
+//        snakeImageJPanel.add(snakeImageCustomPanel);
         newPanel.add(SN, constraints);
 
 
         constraints.gridx = 0;
         constraints.gridy = 3;
+
+
+        JPanel lblScoreJPanel = new JPanel();
         lblScore = new JLabel("Score: 0");
-        newPanel.add(lblScore, constraints);
+        CustomPanel lblScoreScoreCustomPanel = new CustomPanel(Color.white, lblScore);
+        lblScoreJPanel.add(lblScoreScoreCustomPanel);
+        newPanel.add(lblScoreJPanel, constraints);
+
+
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        newPanel.add(new JButton("Quit"), constraints);
 
         newPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
         add(newPanel);
@@ -94,6 +105,7 @@ public class ADI_SnakeGame extends JFrame {
 
 
         adi_prey = new ADI_Prey(ADI_Config.panelWidth, ADI_Config.panelHeight);
+        adi_prey.escapeFrom(adi_snake);
 
 
         adi_gameBoard.setSnake(adi_snake);
@@ -113,5 +125,32 @@ public class ADI_SnakeGame extends JFrame {
             ADI_LoginForm adi_loginForm = new ADI_LoginForm();
             adi_loginForm.setVisible(true);
         });
+    }
+}
+
+class CustomPanel extends JPanel {
+
+
+    @Override
+    public Dimension getMinimumSize() {
+        return new Dimension(100, 40);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(200, 40);
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return new Dimension(400, 40);
+    }
+
+    public CustomPanel(Color c, JLabel jLabel) {
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(0, 0, 0, 0),
+                BorderFactory.createLineBorder(Color.black, 1)));
+        add(jLabel, JPanel.CENTER_ALIGNMENT);
+        setBackground(c);
     }
 }

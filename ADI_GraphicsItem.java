@@ -44,7 +44,9 @@ public class ADI_GraphicsItem implements Shape {
         affineTransform.translate(x - getX(), y - getY());
     }
 
-
+    public void moveTo(Point2D position) {
+        affineTransform.translate(position.getX() - getX(), position.getY() - getY());
+    }
 
 
     public void draw(Graphics2D graphics2D) {
