@@ -48,6 +48,23 @@ public class ADI_GraphicsItem implements Shape {
         affineTransform.translate(position.getX() - getX(), position.getY() - getY());
     }
 
+    public boolean collidesWith(Shape other) {
+        return this.intersects(other.getBounds2D()) ||
+                this.contains(other.getBounds2D());
+    }
+
+
+    public BufferedImage image() {
+        return itemImage;
+    }
+
+    public Graphics2D graphics() {
+        return itemGraphics;
+    }
+
+    public AffineTransform transform() {
+        return affineTransform;
+    }
 
     public void draw(Graphics2D graphics2D) {
         if (graphics2D == null)

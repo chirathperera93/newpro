@@ -59,6 +59,15 @@ public class ADI_GameBoard extends JPanel {
         adi_snake.setBorders(new Rectangle2D.Double(0.0, 0.0, getWidth(), getHeight()));
     }
 
+    public void showMessage(String message) {
+        drawMessage = true;
+        this.message = message;
+        repaint();
+    }
+
+    public void removeMessage() {
+        drawMessage = false;
+    }
 
 
     @Override

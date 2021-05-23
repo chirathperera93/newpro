@@ -3,17 +3,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Class Prey represents any prey object.
- *
- * @author
- */
-
 // 1. We have to do extends this class by JFrame because Prey should be in game board (UI)
 public class ADI_Prey extends ADI_GraphicsItem {
-    /**
-     * Constructor for objects of class Prey
-     */
     ArrayList<Point2D> positions;
     Random random;
 

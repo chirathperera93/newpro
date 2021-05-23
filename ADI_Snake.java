@@ -1,15 +1,6 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
-/**
- * Write a description of class Snake here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-
-
 // 1. We have to do extends this class by JFrame because Snake should be in game board (UI)
 public class ADI_Snake {
 
@@ -19,10 +10,6 @@ public class ADI_Snake {
     private ADI_SnakePart snakeHead;
     private ADI_SnakeAction adi_snakeAction;
     private Rectangle2D.Double borders;
-
-    /**
-     * Constructor for objects of class Snake
-     */
 
     // ****************public methods*******************
     // We have the Constructor ADI_Snake().Under that we should create add method to game board, setTitle method3
@@ -56,7 +43,6 @@ public class ADI_Snake {
     public void setSnakeActionListener(ADI_SnakeAction act) {
         adi_snakeAction = act;
     }
-
 
     public void setBorders(Rectangle2D.Double rect) {
         borders = rect;
@@ -146,6 +132,37 @@ public class ADI_Snake {
             nextDirection = currentDirection;
         }
 
+        checkCollisions();
+    }
+
+    public void checkCollisions() {
+        // check collision and call a something
+        // or make an Event derived class to do so
+
+        if (adi_snakeAction == null)
+            return;
+
+
+        if (snakeHead.collidesWith(adi_prey))
+            adi_snakeAction.snakeHitsPrey();
+
+        // head collides with others already
+        // its previous part has the same coordinates
+        for (int i = 1; i < adi_snakeBody.size(); i++)
+            if (snakeHead.collidesWith(adi_snakeBody.get(i)))
+                adi_snakeAction.snakeHitsItself();
+
+
+        if (!borders.contains(snakeHead.getBounds()))
+            adi_snakeAction.snakeHitsBorders();
+
+        for (ADI_SnakePart adi_snakePart : adi_snakeBody) {
+            if (adi_snakePart == snakeHead)
+                continue;
+
+            if (borders.contains(adi_snakePart.getBounds()))
+                adi_snakeAction.partOutOfBorders(adi_snakePart);
+        }
     }
 
     public ADI_Direction reverseDirection(ADI_Direction adi_direction) {

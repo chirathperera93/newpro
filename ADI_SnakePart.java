@@ -24,7 +24,6 @@ public class ADI_SnakePart extends ADI_GraphicsItem {
     }
 
     public void step() {
-        //step(5,5);
         step(getWidth(), getHeight());
     }
 
