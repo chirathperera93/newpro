@@ -4,12 +4,20 @@ import java.util.ArrayList;
 // 1. We have to do extends this class by JFrame because Snake should be in game board (UI)
 public class ADI_Snake {
 
+
+
+
+
+
     private ArrayList<ADI_SnakePart> adi_snakeBody;
     private ADI_Prey adi_prey;
     private ADI_Direction direction;
     private ADI_SnakePart snakeHead;
     private ADI_SnakeAction adi_snakeAction;
     private Rectangle2D.Double borders;
+
+
+
 
     // ****************public methods*******************
     // We have the Constructor ADI_Snake().Under that we should create add method to game board, setTitle method3
